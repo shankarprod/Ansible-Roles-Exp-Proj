@@ -1,36 +1,36 @@
 - name: disable default nodejs
-ansible.builtin.command: dnf module disable nodejs -y
+  ansible.builtin.command: dnf module disable nodejs -y
 
 - name: enable nodejs 20
-ansible.builtin.command: dnf module enable nodejs:20 -y
+  ansible.builtin.command: dnf module enable nodejs:20 -y
 
 - name: install nodejs # can use dnf also
-ansible.builtin.package: 
-name: nodejs
-state: present
+  ansible.builtin.package: 
+  name: nodejs
+  state: present
 
 - name: create expense user
-ansible.builtin.user:
-name: expense
+  ansible.builtin.user:
+  name: expense
 
 - name: create app directory
-ansible.builtin.file:
-path: /app
-state: directory
+  ansible.builtin.file:
+  path: /app
+  state: directory
 
 - name: download the backend code
-ansible.builtin.get_url: 
-url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
-dest: /tmp/backend.zip
+  ansible.builtin.get_url: 
+  url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+  dest: /tmp/backend.zip
 
 - name: extract the code
-ansible.builtin.unarchive:
-src: /tmp/backend.zip
-dest: /app
+  ansible.builtin.unarchive:
+  src: /tmp/backend.zip
+  dest: /app
 
 - name: copy backend service #copy only works for files without variables so changing from .copy to template
-ansible.builtin.template: 
-src: backend.service.j2 #added .j2
-dest: /etc/systemd/system/backend.service 
+  ansible.builtin.template: 
+  src: backend.service.j2 #added .j2
+  dest: /etc/systemd/system/backend.service 
 
 - name: import
