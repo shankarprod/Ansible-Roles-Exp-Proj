@@ -28,9 +28,9 @@ ansible.builtin.unarchive:
 src: /tmp/backend.zip
 dest: /app
 
-- name: copy backend service
-ansible.builtin.copy: 
-src: backend.service #from the service file
+- name: copy backend service #copy only works for files without variables so changing from .copy to template
+ansible.builtin.template: 
+src: backend.service.j2 #added .j2
 dest: /etc/systemd/system/backend.service 
 
 - name: import
